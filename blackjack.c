@@ -1,13 +1,14 @@
 /* Filename: blackjack.c
 
-This program plays a game of Blackjack with you.  The computer is the dealer 
-and you are the victim-er, I mean, player.  The dealer gets a card that you 
-can see.  The dealer then asks if you want another card by asking "Hit" or 
-"Stand."  If you choose to hit, the dealer gives you another card.  If you
-choose to stand, the dealer draws or stands, and the game is played out 
-according to the cards you and the dealer have.  As with real Blackjack, the 
-dealer stands on 17.  The winner is annoucnced only after both the player's
-and the dealer's hands are finished.  */
+This program plays a game of Blackjack with you.  The computer is the dealer
+and you are the victim-er, I mean, player.  The dealer gets a card that the
+player can see.  The dealer then asks the player if they want another card
+by asking "Hit" or "Stand."  If the player chooses to hit, the dealer deals
+the player another card. If the player chooses to stand, the dealer draws
+or stands, and the game is played out according to the cards the player
+and the dealer have.  As with casino rules Blackjack, the dealer stands on 17.
+The winner is annoucnced only after both the player's and the dealer's
+hands are finished.  */
 
 /************************************************************
 ANSI C standard header files appear next */
@@ -21,18 +22,19 @@ Defined constants appear next */
 #define BELL '\a'
 #define DEALER 0
 #define PLAYER 1
+#define SCREENLINECOUNT 25
 
 /* Must keep two sets of totals for dealer and for player.  The first set
 counts Aces as 1 and the second counts Aces as 11.  
 
 FIXME:  Unlike "real world" Blackjack, this program doesn't allow some 
-Aces to be 1 while other Aces are 11 in the same hand. */
+Aces in a hand to be 1 while other Aces in that hand are counted as 11. */
 #define ACELOW 0
 #define ACEHIGH 1
 
-/* Only one global variable is used in this entire program.  The variable 
+/* Only one global variable is used in this entire program.  That variable 
 holds 0, which means false, initially.  Once the user enters his or her name 
-in initCardsScreen(), this variable is set to 1 (for crue), so the name is 
+in initCardsScreen(), this variable is set to 1 (for true), so the name is 
 never asked for again for the rest of the program. */
 int askedForName = 0; /* False initially */
 
@@ -50,7 +52,7 @@ char getAns(char mesg[]);
 void findWinner(int total[2]);
 
 /************************************************************
-C's program execution always begins at main() here */
+C's program execution always begins here, at main(). */
 main() {
   int numCards; /* Equals 52 at the beginning of each game. */
   int cards[52], playerPoints[2], dealerPoints[2], total[2];
@@ -72,7 +74,7 @@ main() {
     do {
       dealerGetsCard(&numCards, cards, dealerPoints);
     } while (dealerPoints[ACEHIGH] < 17);
-    /* Dealer has to stick at 17. */
+    /* Dealer has to stand at 17. */
     totalIt(dealerPoints, total, DEALER);
     /* Calculate the dealer's hand total. */
     findWinner(total);
@@ -130,7 +132,7 @@ void dealerGetsCard(int *numCards, int cards[52], int dealerPoints[2]) {
   dispCard(newCard, dealerPoints);
 }
 
-/* FIXME: break common code into helper function which is called with the 
+/* FIXME: break common code into a helper function which is called with the 
  * FIXME: string as a parameter. char[] I guess. */
 
 /************************************************************
@@ -238,12 +240,10 @@ char getAns(char mesg[]) {
 Clears everything off the screen. */
 void dispTitle(void) {
   int i = 0;
-  while (i < 25) {
-    printf("\n"); /* Clears screen by printing 25 blank lines. */
+  while (i < SCREENLINECOUNT) {
+    printf("\n"); /* Clears screen by printing a number of blank lines. */
     i++;
   }
   printf("\n\nStep right up to the Blackjack tables*\n\n");
   return;
 }
-
-  
